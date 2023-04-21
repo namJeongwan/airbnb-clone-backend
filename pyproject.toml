@@ -9,6 +9,10 @@ packages = [{include = "airbnb_clone_backend"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 django = "^4.2"
+requests = "^2.28.2"
+pillow = "^9.5.0"
+tox = "^4.4.12"
+flask = "^2.2.3"
 
 
 [build-system]
