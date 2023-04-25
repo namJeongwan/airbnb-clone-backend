@@ -1,4 +1,8 @@
 from django.contrib import admin
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import QuerySet
+
+from .admin_action import *
 from .models import Room, Amenity
 
 
@@ -25,6 +29,19 @@ class RoomAdmin(admin.ModelAdmin):
         "created_at",
         "updated_at",
     )
+
+    search_fields = [
+        "^name",
+        "=price",
+        "^owner__username",
+    ]
+    
+    search_help_text = "원하는 키워드를 입력해보세요!"
+
+    actions = [
+        reset_prices,
+    ]
+
 
 
 @admin.register(Amenity)

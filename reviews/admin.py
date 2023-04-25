@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from .admin_filters import *
 from .models import Review
 
 
@@ -12,4 +14,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
     list_filter = [
         "rating",
+        "user__is_host",
+        "room__category",
+        WordFilter,
     ]

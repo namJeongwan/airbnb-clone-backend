@@ -1,0 +1,59 @@
+{
+    "id": 3,
+    "owner": {
+        "name": "남정완",
+        "avatar": "/j_ON.png",
+        "username": "admin",
+        "is_host": true
+    },
+    "amenities": [
+        {
+            "name": "Shower",
+            "description": "Good"
+        },
+        {
+            "name": "Cooking basics",
+            "description": "Cooking basics"
+        },
+        {
+            "name": "Dishes and silverware",
+            "description": "Dishes and silverware"
+        },
+        {
+            "name": "Private Entrance",
+            "description": "Private Entrance"
+        }
+    ],
+    "category": {
+        "name": "Tiny Homes",
+        "kind": "room"
+    },
+    "created_at": "2023-04-20T16:55:36.153233+09:00",
+    "updated_at": "2023-04-24T14:05:38.930394+09:00",
+    "name": "My Apt",
+    "country": "대한민국",
+    "city": "서울",
+    "price": 0,
+    "rooms": 13,
+    "toilets": 3,
+    "description": "gg",
+    "address": "Seoul 123",
+    "pet_friendly": false,
+    "kind": "entire_place",
+
+}
+
+{
+    "name": "Test House1",
+    "country": "Korean",
+    "city": "Seoul",
+    "price": 1000,
+    "rooms": 2,
+    "toilets": 2,
+    "description": "DRF is great!",
+    "address": "123",
+    "pet_friendly": true,
+    "kind": "private_room",
+    "category": {"name":  "hey", "kind":  "room"},
+    "amenities": [{"name":  "hey", "description":  "hey!!"}]
+}
