@@ -1,4 +1,4 @@
-{
+[{
     "id": 3,
     "owner": {
         "name": "남정완",
@@ -41,7 +41,7 @@
     "pet_friendly": false,
     "kind": "entire_place",
 
-}
+},
 
 {
     "name": "Test House1",
@@ -54,6 +54,7 @@
     "address": "123",
     "pet_friendly": true,
     "kind": "private_room",
-    "category": {"name":  "hey", "kind":  "room"},
-    "amenities": [{"name":  "hey", "description":  "hey!!"}]
+    "category": 5,
+    "amenities": [5, 6, 7]
 }
+]
