@@ -57,7 +57,7 @@ class Room(CommonModel):
             if tot_rating != 0:
                 return round(tot_rating / count, 2)
             else:
-                tot_rating
+                return tot_rating
 
 
 

@@ -14,6 +14,8 @@ pillow = "^9.5.0"
 tox = "^4.4.12"
 flask = "^2.2.3"
 djangorestframework = "^3.14.0"
+pyjwt = "^2.6.0"
+django-environ = "^0.10.0"
 
 
 [build-system]

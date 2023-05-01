@@ -53,3 +53,7 @@ class CustomUserAdmin(UserAdmin):
         "is_host",
         "name",
     )
+
+    list_display_links = [
+        "name",
+    ]

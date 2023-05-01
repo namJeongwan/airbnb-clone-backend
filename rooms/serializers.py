@@ -83,3 +83,10 @@ class RoomDetailSerializer(ModelSerializer):
             return "❤"
         else:
             return "🤍"
+
+    def get_is_liked(self, room):
+        request = self.context["request"]
+        if Wishlist.objects.filter(user=request.user, rooms__pk=room.pk).exists():
+            return "❤"
+        else:
+            return "🤍"

@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import Perks, PerksDetail
+from . import views
 
 urlpatterns = [
-    path("perks/", Perks.as_view()),
-    path("perks/<int:pk>", PerksDetail.as_view()),
+    path("", views.ExperienceList.as_view()),
+    path("<int:pk>/", views.ExperienceDetail.as_view()),
+    path("perks/", views.Perks.as_view()),
+    path("perks/<int:pk>", views.PerksDetail.as_view()),
+    path("<int:pk>/perks/", views.ExperiencePerks.as_view()),
+    path("<int:pk>/bookings/", views.ExperienceBookings.as_view()),
 ]
