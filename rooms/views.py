@@ -6,7 +6,7 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Amenity, Room
 from .serializers import AmenitySerializer, RoomListSerializer, RoomDetailSerializer
@@ -63,7 +63,7 @@ class AmenityDetail(APIView):
 
 class Rooms(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         all_rooms = Room.objects.all()
@@ -105,7 +105,7 @@ class Rooms(APIView):
 
 
 class RoomDetail(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, pk):
         try:
