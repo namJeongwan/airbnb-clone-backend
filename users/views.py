@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
+import requests
+
 import jwt
 
 from .models import User
@@ -128,3 +130,112 @@ class JWTLogIn(APIView):
             return Response({'token': token})
         else:
             return Response({"error": "wrong password or id"})
+
+
+class GithubLogIn(APIView):
+    def post(self, request):
+        try:
+            code = request.data.get("code")
+            gh_url = (
+                    f"https://github.com/login/oauth/access_token?code={code}&"
+                    f"client_id=57c19b04fbc0a0a972fb&"
+                    f"client_secret={settings.GH_SECRET}"
+                   )
+            access_token = requests.post(
+                url=gh_url,
+                headers={
+                    "Accept": "application/json",
+                }
+            )
+            access_token = access_token.json().get('access_token')
+
+            user_data = requests.get(
+                url='https://api.github.com/user',
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            user_data = user_data.json()
+
+            user_emails = requests.get(
+                url='https://api.github.com/user/emails',
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            user_emails = user_emails.json()
+
+            try:
+                user = User.objects.get(email=user_emails[0]['email'])
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                user = User.objects.create(
+                    username=user_data.get('login'),
+                    email=user_emails[0]['email'],
+                    name=user_data.get('name'),
+                    avatar=user_data.get('avatar_url'),
+                )
+                # 해당 User는 오직 Github 로만 로그인 할 수 있음
+                user.set_unusable_password()
+                user.save()
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class KakaoLogIn(APIView):
+    def post(self, request):
+        try:
+            code = request.data.get('code')
+            access_token = requests.post(
+                url="https://kauth.kakao.com/oauth/token",
+                headers={
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data={
+                    "grant_type": "authorization_code",
+                    "client_id": "c143a4c1353741c1579ad78a6d346e74",
+                    "redirect_uri": "http://127.0.0.1:3000/social/kakao",
+                    "code": code,
+                }
+            )
+            access_token = access_token.json().get('access_token')
+            user_data = requests.get(
+                url="https://kapi.kakao.com/v2/user/me",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Content-type": "application/x-www-form-urlencoded;"
+                                    "charset=utf-8",
+                },
+            )
+            user_data = user_data.json()
+            kakao_account = user_data.get('kakao_account')
+            profile = kakao_account.get('profile')
+
+            try:
+                user = User.objects.get(email=kakao_account.get('email'))
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                # 해당 User는 오직 Github 로만 로그인 할 수 있음
+                print(profile)
+                print(kakao_account)
+                user = User.objects.create(
+                    email=kakao_account.get('email'),
+                    username=profile.get('nickname'),
+                    name=profile.get('nickname'),
+                    avatar=profile.get('profile_image_url'),
+                )
+                user.set_unusable_password()
+                user.save()
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            print(e.with_traceback())
+            return Response(status=status.HTTP_400_BAD_REQUEST)
